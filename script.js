@@ -1,64 +1,62 @@
-//your JS code here. If required.
-const promises = [
-  new Promise(resolve => setTimeout(() => resolve(Math.random() * 2 + 1), Math.random() * 2000 + 1000)),
-  new Promise(resolve => setTimeout(() => resolve(Math.random() * 2 + 1), Math.random() * 2000 + 1000)),
-  new Promise(resolve => setTimeout(() => resolve(Math.random() * 2 + 1), Math.random() * 2000 + 1000)),
-];
+const arr = [1,2,3];
+const p1 = new Promise((resolve, reject) =>{
+	const time = arr[Math.floor(Math.random() * 3)];
+	setTimeout(() =>{
+		 const result = {
+      name: "Promise 1",
+      time: time
+    };
+		resolve(result);
+	},time)
+})
+const p2 = new Promise((resolve, reject) =>{
+	const time = arr[Math.floor(Math.random() * 3)];
+	setTimeout(() =>{
+		 const result = {
+      name: "Promise 2",
+      time: time
+    };
+		resolve(result);
+	},time)
+})
+const p3 = new Promise((resolve, reject) =>{
+	const time = arr[Math.floor(Math.random() * 3)];
+	setTimeout(() =>{
+		 const result = {
+      name: "Promise 3",
+      time: time
+    };
+		resolve(result);
+	},time)
+})
 
-// Add loading row
-const loadingRow = document.createElement("tr");
-const loadingCell = document.createElement("td");
-loadingCell.colSpan = 2;
-loadingCell.textContent = "Loading...";
-loadingRow.appendChild(loadingCell);
-document.getElementById("output").appendChild(loadingRow);
+Promise.all([p1, p2, p3]).then((values) =>{
+	let data = document.querySelector('#output');
+	let loading = document.querySelector(".loading");
+	loading.innerHTML="";
 
-Promise.all(promises).then(results => {
-  // Remove loading row
-  loadingRow.remove();
-
-  // Create rows with results
-  const tableBody = document.getElementById("output");
-  const row1 = document.createElement("tr");
-  const row2 = document.createElement("tr");
-  const row3 = document.createElement("tr");
-  const row4 = document.createElement("tr");
-
-  const cell1row1 = document.createElement("td");
-  const cell2row1 = document.createElement("td");
-  cell1row1.textContent = "Promise 1";
-  cell2row1.textContent = results[0].toFixed(3);
-  row1.appendChild(cell1row1);
-  row1.appendChild(cell2row1);
-
-  const cell1row2 = document.createElement("td");
-  const cell2row2 = document.createElement("td");
-  cell1row2.textContent = "Promise 2";
-  cell2row2.textContent = results[1].toFixed(3);
-  row2.appendChild(cell1row2);
-  row2.appendChild(cell2row2);
-
-  const cell1row3 = document.createElement("td");
-  const cell2row3 = document.createElement("td");
-  cell1row3.textContent = "Promise 3";
-  cell2row3.textContent = results[2].toFixed(3);
-  row3.appendChild(cell1row3);
-  row3.appendChild(cell2row3);
-
-  const cell1row4 = document.createElement("td");
-  const cell2row4 = document.createElement("td");
-  cell1row4.textContent = "Total";
-  cell2row4.textContent = (results.reduce((a, b) => a + b, 0)).toFixed(3);
-  row4.appendChild(cell1row4);
-  row4.appendChild(cell2row4);
-
-  tableBody.appendChild(row1);
-  tableBody.appendChild(row2);
-  tableBody.appendChild(row3);
-  tableBody.appendChild(row4);
+	values.forEach((value) =>{
+		let nameCell = document.createElement("td");
+		nameCell.textContent = value.name;
+		let timeCell = document.createElement("td");
+		timeCell.textContent = value.time;
+		let row = document.createElement("tr");
+		row.appendChild(nameCell);
+		row.appendChild(timeCell);
+		data.appendChild(row);
+		
+	});
+	 let totalRow = document.createElement('tr');
+  let totalNameCell = document.createElement('td');
+  totalNameCell.textContent = 'Total';
+	
+	let totalTime = values.reduce((acc, value) => acc + value.time, 0);
+	 let totalTimeCell = document.createElement('td');
+	totalTimeCell.textContent = totalTime.toFixed(3);
+	totalRow.appendChild(totalNameCell);
+  totalRow.appendChild(totalTimeCell);
+  data.appendChild(totalRow);
 });
-
-
 
 
 
